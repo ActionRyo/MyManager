@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod_327a0b0.js"></script>
+<link rel="stylesheet" type="text/css" href="/fishstrap/lib/gri/gri_5217220.css">
+<link rel="stylesheet" type="text/css" href="/fishstrap/util/jquery.datetimepicker_4892d53.css">
+
+<script type="text/javascript" src="/fishstrap/module/jquery_40266ed.js"></script>
+<script type="text/javascript" src="/fishstrap/module/underscore_12b8d8a.js"></script>
+<script type="text/javascript" src="/pkg/backstageBase_d1fcdfc.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/ueditor/ueditor.config_d1fc154.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/ueditor/ueditor.all.min_32ec4fd.js"></script>
+<script type="text/javascript" src="/pkg/uiBase_29fbecc.js"></script>
+<script type="text/javascript" src="/pkg/upload_a8b31e4.js"></script>
+<script type="text/javascript" src="/fishstrap/module/jweixin_fcebad9.js"></script>
+<script type="text/javascript" src="/fishstrap/page/subPage_5d10102.js"></script>
+<script type="text/javascript" src="/fishstrap/util/jqueryDatetimePicker_a2da5d3.js"></script>
+
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript">
+		var $ = require('fishstrap/core/global.js');
+		var input = require('fishstrap/ui/input.js');
+		var dialog = require('fishstrap/ui/dialog.js');
+		input.verticalInput({
+			id:'container',
+			field:[
+				{id:'oldPassword',type:'password',name:'旧密码'},
+				{id:'newPassword1',type:'password',name:'新密码'},
+				{id:'newPassword2',type:'password',name:'再输入一次新密码'},
+			],
+			submit:function(data){
+				if( data.newPassword1 != data.newPassword2 ){
+					dialog.message('两次输入密码不一致');
+					return;
+				}
+				data = {
+					oldPassword:data.oldPassword,
+					newPassword:data.newPassword1
+				};
+				$.post('/user/modMyPassword',data,function(data){
+					data = $.JSON.parse(data);
+					if( data.code != 0 ){
+						dialog.message(data.msg);
+						return;
+					}
+					dialog.message('修改密码成功',function(){
+						location.href = 'index.html';
+					});
+				});
+			},
+			cancel:function(){
+				location.href = 'index.html';
+			}
+		});
+	</script>
+ </body>
+</html>

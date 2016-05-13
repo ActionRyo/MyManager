@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod_327a0b0.js"></script>
+<link rel="stylesheet" type="text/css" href="/fishstrap/lib/gri/gri_5217220.css">
+<link rel="stylesheet" type="text/css" href="/fishstrap/util/jquery.datetimepicker_4892d53.css">
+
+<script type="text/javascript" src="/fishstrap/module/jquery_40266ed.js"></script>
+<script type="text/javascript" src="/fishstrap/module/underscore_12b8d8a.js"></script>
+<script type="text/javascript" src="/pkg/backstageBase_d1fcdfc.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/ueditor/ueditor.config_d1fc154.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/ueditor/ueditor.all.min_32ec4fd.js"></script>
+<script type="text/javascript" src="/pkg/uiBase_29fbecc.js"></script>
+<script type="text/javascript" src="/pkg/upload_a8b31e4.js"></script>
+<script type="text/javascript" src="/fishstrap/module/jweixin_fcebad9.js"></script>
+<script type="text/javascript" src="/fishstrap/page/subPage_5d10102.js"></script>
+<script type="text/javascript" src="/fishstrap/util/jqueryDatetimePicker_a2da5d3.js"></script>
+
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript">
+		var $ = require('fishstrap/core/global.js');
+		var dialog = require('fishstrap/ui/dialog.js');
+		var input = require('fishstrap/ui/input.js');
+		var subPage = require('fishstrap/page/subPage.js');
+		var syncType = {1:'增量转换',2:'全量转换'};
+		function go(){
+			input.verticalInput({
+				id:'container',
+				field:[
+					{id:'gitUrl',type:'text',name:'git地址(https)'},
+					{id:'accessToken',type:'text',name:'csdn访问授权(例如：user,pass)'},
+					{id:'syncType',type:'enum',name:'同步类型',map:syncType},
+				],
+				submit:function(data){
+					$.post('/blog/addTask',data,function(data){
+						data = $.JSON.parse(data);
+						if( data.code != 0 ){
+							dialog.message(data.msg);
+							return;
+						}
+						history.back();
+					});
+				},
+				cancel:function(){
+					history.back();
+				}
+			});
+		}
+		go();
+	</script>
+ </body>
+</html>
